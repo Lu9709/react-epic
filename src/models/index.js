@@ -14,7 +14,7 @@ const Auth = {
         user.setUsername(username)
         user.setPassword(password)
         return new Promise((resolve,reject)=>{
-            user.signUp().then(loginedUser=> resolve(loginedUser),error => resolve(error))
+            user.signUp().then(loginedUser => resolve(loginedUser),error => reject(error))
         })
     },
     login(username,password){
@@ -30,5 +30,7 @@ const Auth = {
     }
 }
 
-export default {Auth};
+export {
+    Auth
+};
 

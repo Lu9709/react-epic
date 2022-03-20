@@ -1,8 +1,7 @@
-import {useRef} from 'react'
 import {observer} from "mobx-react";
-import {useStores} from "../stores";
-import {Form, Input, Button, Checkbox} from 'antd';
+import {Button, Form, Input} from 'antd';
 import styled from "styled-components";
+import {useStores} from "../stores";
 
 const Wrapper = styled.div`
   max-width: 600px;
@@ -16,6 +15,7 @@ const Title = styled.h1`
   margin-bottom: 30px;
 `
 const Component = observer(() => {
+    const { AuthStore } = useStores()
     const layout = {
         labelCol: {span: 6},
         wrapperCol: {span: 18}
@@ -24,17 +24,26 @@ const Component = observer(() => {
         wrapperCol: {offset: 6, span: 18}
     }
     const onFinish = (values) => {
+        const {username,password} = values
+        AuthStore.setUsername(username)
+        AuthStore.setPassword(password)
+        AuthStore.login()
+            .then(()=>{
+                console.log('登录成功，跳转到首页')
+            }).catch(()=>{
+            console.log('登录失败')
+        })
         console.log('Success:', values);
     };
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
     const Validators = {
-        username(rule,value,callback){
-            if(/W/.test(value)) return callback('不能出现字母数字下划线以外的字符')
-            if(value.length < 3) return callback('用户名不能长度小于3')
-            if(value.length > 10) return callback('用户名不能长度大于10')
-            callback()
+        async username(rule,value,callback){
+            if(/W/.test(value)) return Promise.reject('不能出现字母数字下划线以外的字符')
+            if(value.length < 3) return Promise.reject('用户名不能长度小于3')
+            if(value.length > 10) return Promise.reject('用户名不能长度大于10')
+            return Promise.resolve()
         }
     }
 
@@ -61,6 +70,11 @@ const Component = observer(() => {
                     rules={[{required: true,message: '请输入密码',}, {min: 4,message: '最少四个字符'}, {max: 10,message: '最多十个字符'}]}
                 >
                     <Input.Password/>
+                </Form.Item>
+                <Form.Item {...tailLayout}>
+                    <Button type="primary" htmlType="submit">
+                        提交
+                    </Button>
                 </Form.Item>
             </Form>
         </Wrapper>

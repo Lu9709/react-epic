@@ -1,7 +1,7 @@
 import {useRef} from 'react'
 import {observer} from "mobx-react";
 import {useStores} from "../stores";
-import {Form, Input, Button, Checkbox} from 'antd';
+import {Form, Input, Button} from 'antd';
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -26,16 +26,27 @@ const Component = observer(() => {
     }
     const onFinish = (values) => {
         console.log('Success:', values);
+        const {username,password} = values
+        AuthStore.setUsername(username)
+        AuthStore.setPassword(password)
+        AuthStore.register()
+            .then((suc)=>{
+                console.log(suc)
+                console.log('注册成功')
+            }).catch((err)=>{
+            console.log(err)
+            console.log('注册失败,什么都不做')
+        })
     };
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
     const Validators = {
         username(rule,value,callback){
-            if(/W/.test(value)) return callback('不能出现字母数字下划线以外的字符')
-            if(value.length < 3) return callback('用户名不能长度小于3')
-            if(value.length > 10) return callback('用户名不能长度大于10')
-            callback()
+            if(/W/.test(value)) return Promise.reject('不能出现字母数字下划线以外的字符')
+            if(value.length < 3) return Promise.reject('用户名不能长度小于3')
+            if(value.length > 10) return Promise.reject('用户名不能长度大于10')
+            return Promise.resolve()
         }
     }
     const confirmPassword = ({getFieldValue}) => ({
