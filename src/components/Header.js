@@ -26,7 +26,7 @@ function Component() {
         <Header>
             <Logo src={LogoUrl}/>
             <nav>
-                <StyledLink to="/" activeClassName="active" exact>首页</StyledLink>
+                <StyledLink to="/" activeClassName="active" exact={true}>首页</StyledLink>
                 <StyledLink to="/history" activeClassName="active">历史</StyledLink>
                 <StyledLink to="/about" activeClassName="active">关于我</StyledLink>
             </nav>

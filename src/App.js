@@ -8,6 +8,8 @@ import Loading from "./components/Loading";
 const Home = lazy(() => import('./pages/Home'));
 const History = lazy(() => import('./pages/History'));
 const About = lazy(() => import('./pages/About'))
+const Login = lazy(() => import('./pages/Login'))
+const Register = lazy(() => import('./pages/Register'))
 
 function App() {
     return (
@@ -17,8 +19,10 @@ function App() {
                 <Suspense fallback={<Loading/>}>
                     <Routes>
                         <Route path='/' element={<Home/>} exact/>
-                        <Route path='/About' element={<About/>} exact/>
-                        <Route path='/History' element={<History/>} exact/>
+                        <Route path='/About' element={<About/>}/>
+                        <Route path='/History' element={<History/>}/>
+                        <Route path='/Login' element={<Login/>}/>
+                        <Route path='/Register' element={<Register/>}/>
                     </Routes>
                 </Suspense>
             </main>
