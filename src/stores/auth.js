@@ -1,10 +1,13 @@
-import { observable,action } from 'mobx'
+import {observable, action, makeObservable} from 'mobx'
 
 class AuthStore {
+    constructor() {
+        makeObservable(this)
+    }
     @observable isLogin = false;
     @observable isLoading = false;
     @observable values = {
-        username:'',
+        username:'John',
         password:''
     };
     @action setIsLogin(isLogin) {
@@ -38,4 +41,4 @@ class AuthStore {
         console.log('注销')
     }
 }
-export default AuthStore
+export {AuthStore}

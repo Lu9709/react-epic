@@ -19,17 +19,30 @@ const StyledLink = styled(NavLink)`
   &.active {
     border-bottom: 1px solid #fff;
   }
-  
+`
+const Login = styled.div`
+  margin-left: auto;
+`
+const Button = styled.button`
+  margin-left: 10px;
 `
 function Component() {
     return (
         <Header>
             <Logo src={LogoUrl}/>
             <nav>
-                <StyledLink to="/" activeClassName="active" exact={true}>首页</StyledLink>
-                <StyledLink to="/history" activeClassName="active">历史</StyledLink>
-                <StyledLink to="/about" activeClassName="active">关于我</StyledLink>
+                <StyledLink to="/" activeclassname="active" exact={'true'}>首页</StyledLink>
+                <StyledLink to="/history" activeclassname="active">历史</StyledLink>
+                <StyledLink to="/about" activeclassname="active">关于我</StyledLink>
             </nav>
+            <Login>
+                <Button>
+                    <StyledLink to="/login">登录</StyledLink>
+                </Button>
+                <Button>
+                    <StyledLink to="/register">注册</StyledLink>
+                </Button>
+            </Login>
         </Header>
     )
 }
