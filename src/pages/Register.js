@@ -1,8 +1,8 @@
-import {useRef} from 'react'
 import {observer} from "mobx-react";
 import {useStores} from "../stores";
 import {Form, Input, Button} from 'antd';
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   max-width: 600px;
@@ -17,6 +17,7 @@ const Title = styled.h1`
 `
 const Component = observer(() => {
     const {AuthStore} = useStores()
+    const navigate = useNavigate()
     const layout = {
         labelCol: {span: 6},
         wrapperCol: {span: 18}
@@ -30,8 +31,8 @@ const Component = observer(() => {
         AuthStore.setUsername(username)
         AuthStore.setPassword(password)
         AuthStore.register()
-            .then((suc)=>{
-                console.log(suc)
+            .then(()=>{
+                navigate('/')
                 console.log('注册成功')
             }).catch((err)=>{
             console.log(err)

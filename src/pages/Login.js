@@ -2,6 +2,7 @@ import {observer} from "mobx-react";
 import {Button, Form, Input} from 'antd';
 import styled from "styled-components";
 import {useStores} from "../stores";
+import {useNavigate} from 'react-router-dom'
 
 const Wrapper = styled.div`
   max-width: 600px;
@@ -16,6 +17,7 @@ const Title = styled.h1`
 `
 const Component = observer(() => {
     const { AuthStore } = useStores()
+    const navigate = useNavigate()
     const layout = {
         labelCol: {span: 6},
         wrapperCol: {span: 18}
@@ -30,6 +32,7 @@ const Component = observer(() => {
         AuthStore.login()
             .then(()=>{
                 console.log('登录成功，跳转到首页')
+                navigate('/')
             }).catch(()=>{
             console.log('登录失败')
         })

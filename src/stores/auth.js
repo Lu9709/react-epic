@@ -1,5 +1,6 @@
 import {observable, action, makeObservable} from 'mobx'
 import {Auth} from '../models'
+import UserStore from "./user"
 class AuthStore {
     constructor() {
         makeObservable(this)
@@ -19,11 +20,11 @@ class AuthStore {
             const {username,password} = this.values
             Auth.login(username,password)
                 .then(user=>{
-                    console.log('登录成功')
+                    UserStore.pullUser()
                     resolve(user)
                 })
                 .catch(err=>{
-                    console.log('登录失败')
+                    UserStore.resetUser()
                     reject(err)
                 })
         })
@@ -33,16 +34,17 @@ class AuthStore {
             const {username,password} = this.values
             Auth.register(username,password)
                 .then(user=>{
-                    console.log('注册成功')
+                    UserStore.pullUser()
                     resolve(user)
                 }).catch(err=>{
-                    console.log('注册失败')
+                    UserStore.resetUser()
                     reject(err)
                 })
         })
     }
     @action logout() {
         Auth.logout()
+        UserStore.resetUser()
     }
 }
-export {AuthStore}
+export default new AuthStore()
