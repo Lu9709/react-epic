@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import {useStores} from "../stores";
 import {observer,useLocalStore} from "mobx-react";
-import {message, Upload} from "antd";
+import {message, Upload,Spin} from "antd";
 import {InboxOutlined} from '@ant-design/icons';
 import styled from "styled-components";
 
@@ -58,6 +58,15 @@ const Component = observer(() => {
         message.warning('请先登录再上传！')
         return false;
       }
+      window.file = file
+      if(!/(svg|png|jpg|jpeg|gif)$/ig.test(file.type)){
+        message.error('只能上传.svg/.png/.jpg/.jpeg/.gif格式的文件！')
+        return false;
+      }
+      if(file.size > 1024* 1024){
+        message.error('图片最大尺寸不能超过1M！')
+        return false;
+      }
       ImageStore.upload()
         .then((serverFile)=>{
           console.log('上传成功')
@@ -70,17 +79,18 @@ const Component = observer(() => {
   }
 
   return (
-    <div>
-      <Dragger {...props}>
-        <p className="ant-upload-drag-icon">
-          <InboxOutlined />
-        </p>
-        <p className="ant-upload-text">Click or drag file to this area to upload</p>
-        <p className="ant-upload-hint">
-          Support for a single or bulk upload. Strictly prohibit from uploading company data or other
-          band files
-        </p>
-      </Dragger>
+    <>
+      <Spin tip='上传中' spinning={ImageStore.isUploading}>
+        <Dragger {...props}>
+          <p className="ant-upload-drag-icon">
+            <InboxOutlined />
+          </p>
+          <p className="ant-upload-text">点击或者拖拽上传图片</p>
+          <p className="ant-upload-hint">
+            仅支持.svg/.png/.jpg/.jpeg/.gif格式的图片，最大尺寸不能超过1M
+          </p>
+        </Dragger>
+      </Spin>
       {
         ImageStore.serverFile ? <Result>
           <H1>上传结果</H1>
@@ -105,7 +115,7 @@ const Component = observer(() => {
           </dl>
         </Result> : null
       }
-    </div>
+    </>
   );
 })
 export default Component;
