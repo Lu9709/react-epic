@@ -5,7 +5,7 @@ import 'antd/dist/antd.css';
 import reportWebVitals from './reportWebVitals';
 
 import {
-    BrowserRouter as Router
+    HashRouter as Router
 } from 'react-router-dom'
 ReactDOM.render(
       <Router>
